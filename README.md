@@ -1,18 +1,21 @@
 # JobOps
 
-JobOps is a reference implementation of a job-search tracking system. It uses n8n workflows and an Airtable base to log companies, applications, interviews, CV versions, outreach drafts, and bi-weekly reviews, all through a Telegram bot. No part of the system uses an LLM API key.
+JobOps is a reference implementation of a job-search tracking system. 
+It uses n8n workflows and an Airtable base to log companies, applications, interviews, CV versions, outreach drafts, and bi-weekly reviews, all through a Telegram bot. No part of the system uses an LLM API key.
 
 This repository is the public, sanitised half of a two-track project. It contains fictional data only. No real company names, emails, or numbers appear anywhere in this repository.
 
 ## Why this exists
 
-Most job-search trackers are a spreadsheet with free text in every cell. This project builds the same tracker as a small data platform instead. It uses linked records between tables and a config layer instead of hardcoded IDs. A bot collects structured input through dropdowns rather than a text box. It is a portfolio piece. It shows the same data-modelling and automation practices used on a production system, applied to a personal problem.
+Most job-search trackers are a spreadsheet with free text in every cell. This project builds the same tracker as a small data platform instead. It uses linked records between tables and a config layer instead of hardcoded IDs. 
+A bot collects structured input through dropdowns rather than a text box. It is a portfolio piece. It shows the same data-modelling and automation practices used on a production system, applied to a personal problem.
 
 ## Two-track architecture
 
 The real version of this system runs against Elena's own Airtable base, with real companies, contacts, and application data. That base and its n8n credentials stay private and never appear here.
 
-This repository is the second track: the same workflows and the same base structure, rebuilt against a fresh Airtable base seeded with three fictional companies. The workflows never contain a hardcoded base ID, table ID, or credential. Instead, every workflow reads its Airtable IDs from a small n8n Data Table at runtime (see [Self-hosting setup, Step 4](#step-4--set-up-the-config-data-tables) below). The exported JSON in this repository is safe to publish by construction, not because of manual redaction after the fact.
+This repository is the second track: the same workflows and the same base structure, rebuilt against a fresh Airtable base seeded with three fictional companies. 
+The workflows never contain a hardcoded base ID, table ID, or credential. Instead, every workflow reads its Airtable IDs from a small n8n Data Table at runtime (see [Self-hosting setup, Step 4](#step-4--set-up-the-config-data-tables) below). The exported JSON in this repository is safe to publish by construction, not because of manual redaction after the fact.
 
 ## Architecture
 
@@ -74,7 +77,7 @@ Applications also keeps a free-text "Company name" and "CV version used" field, 
 
 **Interviews**: Round (primary) · Application (link) · Contact person · Interview date · Follow-up date · Outcome (advanced / rejected / withdrew / pending) · Prep notes · Feedback.
 
-**CV Versions**: Version name (primary — naming convention `template_LANG_semver`, for example `minimal_EN_1.0`) · Template · Role category · Language · Created · Updated · Changelog · Status.
+**CV Versions**: Version name (primary - naming convention `template_LANG_semver`, for example `minimal_EN_1.0`) · Template · Role category · Language · Created · Updated · Changelog · Status.
 
 **Outreach**: Subject (primary) · Company (link) · Type (cold mail / follow-up / reminder / thank-you) · Draft · Prompt version · Status (proposed / approved / drafted-in-mail / sent / answered / dead) · Proposed on · Sent on · Notes.
 
@@ -90,19 +93,19 @@ Every single-select field's options, colours, and emoji are a starting point. Re
 - An Airtable account, free tier is enough.
 - A Telegram bot token. Message [@BotFather](https://t.me/BotFather) on Telegram, run `/newbot`, and follow the prompts. You get a token back immediately.
 
-### Step 1 — Build the Airtable base
+### Step 1 - Build the Airtable base
 
 Create a new Airtable base with the six tables from the [schema](#the-airtable-schema) above. Import each `seed/*.csv` file into its matching table to get three fictional example rows per table, plus the linked-record structure to copy.
 
-### Step 2 — Connect the Telegram bot
+### Step 2 - Connect the Telegram bot
 
 Add a Telegram credential in your n8n instance using the bot token from BotFather. Message your new bot once, with any text. This step matters: without at least one message, n8n cannot show you the chat ID you need for Step 4.
 
-### Step 3 — Import the workflows
+### Step 3 - Import the workflows
 
 Import all nine files from `workflows/` into your n8n instance, in this order: `00-router.json` first, then the rest in any order. Do not activate any workflow yet.
 
-### Step 4 — Set up the config Data Tables
+### Step 4 - Set up the config Data Tables
 
 Every workflow reads its Airtable IDs from an n8n Data Table instead of a hardcoded value. n8n's native Variables feature sits behind a paid plan, so this template does not use it. You need two Data Tables.
 
@@ -166,7 +169,9 @@ This is guidance, not a built feature. No live node in this template's workflows
 
 ## Contributing
 
-This is a personal reference implementation, published as a portfolio piece and a starting point for anyone who wants to run something similar. Fork it, strip what you do not need, and adapt the schema to your own job search. Issues and pull requests are welcome for bugs in the workflow logic or the base schema. Feature requests that move this away from a Telegram-and-Airtable-only, LLM-free design are out of scope. That constraint is intentional.
+This is a personal reference implementation, published as a portfolio piece and a starting point for anyone who wants to run something similar. 
+Fork it, strip what you do not need, and adapt the schema to your own job search. Issues and pull requests are welcome for bugs in the workflow logic or the base schema. 
+Feature requests that move this away from a Telegram-and-Airtable-only, LLM-free design are out of scope. That constraint is intentional.
 
 ## License
 
