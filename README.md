@@ -1,13 +1,15 @@
 # JobOps
 
 JobOps is a reference implementation of a job-search tracking system. 
+
 It uses n8n workflows and an Airtable base to log companies, applications, interviews, CV versions, outreach drafts, and bi-weekly reviews, all through a Telegram bot. No part of the system uses an LLM API key.
 
 This repository is the public, sanitised half of a two-track project. It contains fictional data only. No real company names, emails, or numbers appear anywhere in this repository.
 
 ## Why this exists
 
-Most job-search trackers are a spreadsheet with free text in every cell. This project builds the same tracker as a small data platform instead. It uses linked records between tables and a config layer instead of hardcoded IDs. 
+Most job-search trackers are a spreadsheet with free text in every cell. This project builds the same tracker as a small data platform instead. It uses linked records between tables and a config layer instead of hardcoded IDs.
+
 A bot collects structured input through dropdowns rather than a text box. It is a portfolio piece. It shows the same data-modelling and automation practices used on a production system, applied to a personal problem.
 
 ## Two-track architecture
@@ -15,6 +17,7 @@ A bot collects structured input through dropdowns rather than a text box. It is 
 The real version of this system runs against Elena's own Airtable base, with real companies, contacts, and application data. That base and its n8n credentials stay private and never appear here.
 
 This repository is the second track: the same workflows and the same base structure, rebuilt against a fresh Airtable base seeded with three fictional companies. 
+
 The workflows never contain a hardcoded base ID, table ID, or credential. Instead, every workflow reads its Airtable IDs from a small n8n Data Table at runtime (see [Self-hosting setup, Step 4](#step-4--set-up-the-config-data-tables) below). The exported JSON in this repository is safe to publish by construction, not because of manual redaction after the fact.
 
 ## Architecture
@@ -125,13 +128,13 @@ Every workflow reads its Airtable IDs from an n8n Data Table instead of a hardco
 
 Every workflow that reads config ships with a sticky note titled "Setup required: jobops_template_config Data Table ID." Open each workflow and find that note. Open the **Load Config** node (or nodes, for Application Reminders, which has three) and point it at your new Data Table. Do the same for the two nodes that use `jobops_template_reviews_digests`, in **Reviews Digest** and **Reviews Reply Capture**.
 
-### Step 5 — Set the Telegram chat ID
+### Step 5 - Set the Telegram chat ID
 
 Two workflows run on a schedule and have no incoming Telegram message to read a chat ID from: **Application Reminders** and **Reviews Digest**. Both ship with a `YOUR_TELEGRAM_CHAT_ID` placeholder and a matching sticky note. The note explains how to find your chat ID: open the router's trigger node, use "Listen for test event," and send the bot a message.
 
 Every other workflow reads the chat ID automatically from the incoming Telegram message, so you only need to do this for the two cron-triggered ones.
 
-### Step 6 — Publish
+### Step 6 - Publish
 
 After you fill in a placeholder, you must republish that workflow. Editing a workflow only changes its draft. It does not change what is live.
 
